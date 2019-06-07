@@ -1,16 +1,28 @@
-import React, { Component } from 'react';
-import TopBar from './components/TopBar';
-import Header from './components/Header';
-import Content from './components/Content/Content';
+import React from 'react';
+import withAuthenticate from './components/authentication/withAuthenticate'
+import App1 from './App1'
+import Login from './components/Login'
 
-const App = () => {
+const ComponentFromWithAuthenticate = withAuthenticate(App1)(Login);
+
+class App extends React.Component {
+
+  login = (userName, password) => {
+    localStorage.setItem('username', userName);
+  }
+
+  logout = () => {
+    localStorage.setItem('username', '')
+    window.location.reload()
+  }
+
+  render() {
   return (
     <div className="App">
-      <TopBar />
-      <Header />
-      <Content />
+      <ComponentFromWithAuthenticate logout = {this.logout} login = {this.login}/>
     </div>
   );
+  }
 }
 
 export default App;
